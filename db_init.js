@@ -17,7 +17,7 @@ con.connect(function(err) {
 
   const createTable = `CREATE TABLE IF NOT EXISTS strings
     (id int primary key auto_increment, keyword VARCHAR(255), locale VARCHAR(20), translation VARCHAR(4056))
-    ENGINE=MEMORY DEFAULT CHARSET=utf8
+    DEFAULT CHARSET=utf8
     `;
   con.query(createTable, function (err, result) {
     if (err) throw err;
