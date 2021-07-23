@@ -84,13 +84,10 @@ async function readFile() {
 async function process(data) {
   const keys = await neatCsv(data);
 
-  for (let i = 0; i < targets.length; i++) {
-    const target = targets[i];
-    for (let j = 0; j < target.out.length; j++) {
-      const output = target.out[j];
+  for(const target of targets) {
+    for(const output of target.out) {
       let strArray = [];
-      for (let k = 0; k < keys.length; k++) {
-        const key = keys[k];
+      for(const key of keys) {
         const obj = {
           Key: key.Key,
           en: key.en
@@ -112,8 +109,7 @@ async function process(data) {
 }
 
 async function main() {
-  for (let xx = 0; xx < inputFiles.length; xx++) {
-    inputFile = inputFiles[xx];
+  for(inputFile of inputFiles) {
     file = `${inputFolder}${inputFile}`;
     const data = await readFile();
     await process(data);
