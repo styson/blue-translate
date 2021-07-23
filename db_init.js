@@ -7,11 +7,11 @@ const con = mysql.createConnection({
 
 con.connect(function(err) {
   if (err) throw err;
-  con.query('CREATE DATABASE IF NOT EXISTS translate', function (err, result) {
+  con.query('CREATE DATABASE IF NOT EXISTS translate', function (err) {
     if (err) throw err;
   });
 
-  con.changeUser({database: 'translate'}, function (err, result) {
+  con.changeUser({database: 'translate'}, function (err) {
     if (err) throw err;
   });
 
@@ -19,12 +19,12 @@ con.connect(function(err) {
     (id int primary key auto_increment, keyword VARCHAR(255), locale VARCHAR(20), translation VARCHAR(4056))
     DEFAULT CHARSET=utf8
     `;
-  con.query(createTable, function (err, result) {
+  con.query(createTable, function (err) {
     if (err) throw err;
   });
 
   const addIndex = 'ALTER TABLE `strings` ADD INDEX `keyword_locale_index` (`keyword`,`locale`)';
-  con.query(addIndex, function (err, result) {
+  con.query(addIndex, function (err) {
     if (err) throw err;
   });
 

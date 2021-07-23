@@ -19,6 +19,6 @@ async function translateText(text, target) {
 }
 
 console.log(`Translations of "${text}":`);
-targets.forEach((target, i) => {
+targets.forEach((target) => {
   translateText(text, target)
 });

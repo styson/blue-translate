@@ -1,0 +1,42 @@
+{
+  "env": {
+    "node": true,
+    "es6": true
+  },
+
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+
+  "globals": {
+    "fixture": false,
+    "test": false
+  },
+
+  "root": true,
+
+  "rules": {
+    "class-methods-use-this": "off",
+    "import/no-unresolved": "off",
+    "import/order": "off",
+    "import/prefer-default-export": "off",
+    "max-classes-per-file": "off",
+    "max-len": ["warn", 100],
+    "newline-per-chained-call": "off",
+    "no-await-in-loop": "off",
+    "no-continue": "off",
+    "no-param-reassign": "warn",
+    "no-plusplus": "off",
+    "no-undef": "off",
+    "no-underscore-dangle": "off",
+    "no-unused-expressions": "off",
+    "no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }],
+
+    "object-curly-newline": ["error", {
+      "consistent": true,
+      "multiline": true
+    }],
+
+    "wrap-iife": ["error", "inside"]
+  }
+}
