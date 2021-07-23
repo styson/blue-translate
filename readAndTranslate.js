@@ -18,51 +18,19 @@ const pool = mysql.createPool({
 
 const targets = require('./targets.js');
 // const targets = [
-  // { code:'sk',name:'Slovak',out:['sk-SK'] },
-  // { code:'th',name:'Thai',out:['th-TH'] },
-  // { code:'tr',name:'Turkish',out:['tr'] },
-  // { code:'vi',name:'Vietnamese',out:['vi-VN'] },
-  // { code:'zh-CN',name:'Chinese (Simplified)',out:['zh-CHS'] },
-  // { code:'zh-TW',name:'Chinese (Traditional)',out:['zh-CHT'] }
   // { code:'es',name:'Spanish',out:['es','es-ES'] },
   // { code:'de',name:'German',out:['de'] },
 // ]
 
-// const inputFolder = 'C:\\';
-// const inputFile = 'froala.en.csv';
-// const inputFile = '18.5.Frontend_PortalSettings.en.csv';
-// const inputFile = '18.5.Core.PortalSettings.en.csv';
-// const inputFile = '19.0.Facet_Validation.en.csv';
-// const inputFile = '19.0.MissingKeys.en.csv';
-
-// const inputFile = '19.1.AlternateId.en.csv';
-// const inputFile = '19.1.AssignWithoutOwnership.en.csv';
-// const inputFile = '18.5.ESP_Button_Tooltips.en.csv';
-
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
-// const inputFile = '19.1.Console.BatchActions.en.csv';
-// const inputFile = '19.1.Console.en.csv';
-// const inputFile = '19.1.Fax.en.csv';
-// const inputFile = '19.2.CaseFilters.en.csv';
-// const inputFile = '1013.EntityQueries.en.csv';
-// const inputFile = '19.1.PurgeActions.en.csv';
-// const inputFile = '19.2.Queries.en.csv';
-// const inputFile = '19.2.CountryFilters.en.csv';
-// const inputFile = '19.2.FAValidation.en.csv';
-// const inputFile = '18.5.Core.PortalSettings.en.csv';
-// const inputFile = '20.0.MissingKeys.en.csv';
-// const inputFile = '20.0.Variables.en.csv';
-// const inputFile = '19.2.ApiPermission.en.csv';
-// const inputFile = '20.0.interaction_list_values.en.csv';
-// const inputFile = '20.0.ApiPermission.en.csv';
-// const inputFile = '20.0.ApiValidation.en.csv';
-// const inputFile = '20.PortalFilters.en.csv';
-// const inputFile = '1001.Frontend_PortalLinks.csv';
-// const inputFile = '20.0.Frontend_PortalLinks.csv';
-// const inputFile = '20.0.Core.PortalConfigs.csv';
-const inputFile = '20.1.0.PortalFilters.csv';
+// const inputFile = '20.5.0.asset_page.en.csv';
+// const inputFile = '20.5.Assets.en.csv';
+// const inputFile = '20.6.ie11WarningBanner.en.csv';
+// const inputFile = '20.6.ieWarning.en.csv';
+const inputFiles = ['20.5.0.asset_page.en.csv', '20.5.Assets.en.csv'];
 
-const file = `${inputFolder}${inputFile}`;
+let inputFile = '';
+let file = '';
 
 async function translateText(text, target) {
   const [translation] = await translate.translate(text, target);
@@ -144,8 +112,12 @@ async function process(data) {
 }
 
 async function main() {
-  const data = await readFile();
-  await process(data);
+  for (let xx = 0; xx < inputFiles.length; xx++) {
+    inputFile = inputFiles[xx];
+    file = `${inputFolder}${inputFile}`;
+    const data = await readFile();
+    await process(data);
+  }
   pool.end();
 }
 
