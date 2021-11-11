@@ -18,8 +18,8 @@ const pool = mysql.createPool({
 
 const targets = require('./targets.js');
 // const targets = [
-  // { code:'es',name:'Spanish',out:['es','es-ES'] },
-  // { code:'de',name:'German',out:['de'] },
+//   { code:'es',name:'Spanish',out:['es','es-ES'] },
+//   { code:'de',name:'German',out:['de'] },
 // ]
 
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
@@ -27,10 +27,15 @@ const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
 // const inputFile = '20.5.Assets.en.csv';
 // const inputFile = '20.6.ie11WarningBanner.en.csv';
 // const inputFile = '20.6.ieWarning.en.csv';
-const inputFiles = ['20.5.0.asset_page.en.csv', '20.5.Assets.en.csv'];
+// const inputFiles = ['20.8.sites.en.csv'];
+// const inputFiles = ['20.8.GeneralTimestampFormat.en.csv'];
+// const inputFiles = ['20.8.organizations.en.csv'];
+const inputFiles = ['20.8.sites.en.csv'];
 
 let inputFile = '';
 let file = '';
+
+let ignorePreviousDatabaseRecords = false;
 
 async function translateText(text, target) {
   const [translation] = await translate.translate(text, target);
@@ -38,6 +43,7 @@ async function translateText(text, target) {
 }
 
 async function rowExists(keyword, locale) {
+  if (ignorePreviousDatabaseRecords) return '';
   try {
     const [result] = await pool.query('select translation from strings where keyword = ? and locale = ?', [keyword, locale]);
     if (result.length < 1) {
@@ -85,6 +91,7 @@ async function process(data) {
   const keys = await neatCsv(data);
 
   for(const target of targets) {
+    console.log(target)
     for(const output of target.out) {
       let strArray = [];
       for(const key of keys) {
@@ -106,8 +113,8 @@ async function process(data) {
       await writeFile(strArray, output);
     }
   }
-}
 
+}
 async function main() {
   for(inputFile of inputFiles) {
     file = `${inputFolder}${inputFile}`;
