@@ -25,6 +25,6 @@ module.exports = [
   { code:'th',name:'Thai',out:['th-TH'] },
   { code:'tr',name:'Turkish',out:['tr'] },
   { code:'vi',name:'Vietnamese',out:['vi-VN'] },
-  { code:'zh-CN',name:'Chinese (Simplified)',out:['zh-CHS'] },
-  { code:'zh-TW',name:'Chinese (Traditional)',out:['zh-CHT'] }
+  { code:'zh-CN',name:'Chinese (Simplified)',out:['zh-Hans'] },
+  { code:'zh-TW',name:'Chinese (Traditional)',out:['zh-Hant'] }
 ]
