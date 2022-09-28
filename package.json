@@ -8,7 +8,7 @@
     "eslint": "eslint --quiet *.js"
   },
   "dependencies": {
-    "@google-cloud/translate": "^6.3.0",
+    "@google-cloud/translate": "^7.0.3",
     "fast-csv": "^4.3.6",
     "fs": "^0.0.1-security",
     "mkdirp": "^1.0.4",

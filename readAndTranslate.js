@@ -23,19 +23,13 @@ const targets = require('./targets.js');
 // ]
 
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
-// const inputFile = '20.5.0.asset_page.en.csv';
-// const inputFile = '20.5.Assets.en.csv';
-// const inputFile = '20.6.ie11WarningBanner.en.csv';
-// const inputFile = '20.6.ieWarning.en.csv';
-// const inputFiles = ['20.8.sites.en.csv'];
-// const inputFiles = ['20.8.GeneralTimestampFormat.en.csv'];
-// const inputFiles = ['20.8.organizations.en.csv'];
-const inputFiles = ['20.8.sites.en.csv'];
+const inputFiles = ['2022.4.SaveSettings.en.csv'];
+// const inputFiles = ['2022.5.AdminEmailAccounts.en.csv'];
 
 let inputFile = '';
 let file = '';
 
-let ignorePreviousDatabaseRecords = false;
+const ignorePreviousDatabaseRecords = false;
 
 async function translateText(text, target) {
   const [translation] = await translate.translate(text, target);
@@ -45,6 +39,7 @@ async function translateText(text, target) {
 async function rowExists(keyword, locale) {
   if (ignorePreviousDatabaseRecords) return '';
   try {
+    // eslint-disable-next-line max-len
     const [result] = await pool.query('select translation from strings where keyword = ? and locale = ?', [keyword, locale]);
     if (result.length < 1) {
       return '';
