@@ -23,7 +23,7 @@ const targets = require('./targets.js');
 // ]
 
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
-const inputFiles = ['2022.4.SaveSettings.en.csv'];
+const inputFiles = ['2023.5.EmployeeImporter.en.csv'];
 // const inputFiles = ['2022.5.AdminEmailAccounts.en.csv'];
 
 let inputFile = '';

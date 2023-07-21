@@ -23,9 +23,14 @@ con.connect(function(err) {
     if (err) throw err;
   });
 
+  const dropIndex = 'ALTER TABLE `strings` DROP INDEX `keyword_locale_index`';
+  con.query(dropIndex, function (err) {
+    // if (err) throw err;
+  });
+
   const addIndex = 'ALTER TABLE `strings` ADD INDEX `keyword_locale_index` (`keyword`,`locale`)';
   con.query(addIndex, function (err) {
-    if (err) throw err;
+    // if (err) throw err;
   });
 
   console.log('database initialized');
