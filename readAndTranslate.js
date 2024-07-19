@@ -1,10 +1,11 @@
-const fs = require('fs');
-const mkdirp = require('mkdirp')
-const mysql = require('mysql2/promise');
 const { Translate } = require('@google-cloud/translate').v2;
-const translate = new Translate();
-const neatCsv = require('neat-csv'); // https://github.com/sindresorhus/neat-csv
 const fastCsv = require('fast-csv'); // https://c2fo.io/fast-csv/
+const fs = require('fs');
+const mkdirp = require('mkdirp');
+const mysql = require('mysql2/promise');
+const neatCsv = require('neat-csv'); // https://github.com/sindresorhus/neat-csv
+
+const translate = new Translate();
 
 const pool = mysql.createPool({
   host: 'localhost',
@@ -13,7 +14,7 @@ const pool = mysql.createPool({
   database: 'translate',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
 });
 
 const targets = require('./targets.js');
@@ -23,8 +24,7 @@ const targets = require('./targets.js');
 // ]
 
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
-const inputFiles = ['2023.5.EmployeeImporter.en.csv'];
-// const inputFiles = ['2022.5.AdminEmailAccounts.en.csv'];
+const inputFiles = ['2024.6.1.CustomFields.en.csv'];
 
 let inputFile = '';
 let file = '';
@@ -33,6 +33,7 @@ const ignorePreviousDatabaseRecords = false;
 
 async function translateText(text, target) {
   const [translation] = await translate.translate(text, target);
+
   return translation;
 }
 
@@ -40,34 +41,38 @@ async function rowExists(keyword, locale) {
   if (ignorePreviousDatabaseRecords) return '';
   try {
     // eslint-disable-next-line max-len
-    const [result] = await pool.query('select translation from strings where keyword = ? and locale = ?', [keyword, locale]);
+    const [result] = await pool.query(
+      'select translation from strings where keyword = ? and locale = ?',
+      [keyword, locale],
+    );
+
     if (result.length < 1) {
       return '';
     } else {
       return result[0].translation;
     }
   } catch (err) {
-    console.error("Table query failed:", err);
+    console.error('Table query failed:', err);
   }
 }
 
 async function insertRow(keyword, locale, translation) {
-  await pool.query('insert IGNORE into strings set keyword = ?, locale = ?, translation = ?',
-    [ keyword, locale, translation ]
-  );
+  await pool.query('insert IGNORE into strings set keyword = ?, locale = ?, translation = ?', [
+    keyword,
+    locale,
+    translation,
+  ]);
 }
 
 async function writeFile(strArray, output) {
   const dir = `./results/${output}`;
   mkdirp.sync(dir);
 
-  const outputFile = `${dir}/${inputFile.replace('.en.',`.${output}.`)}`;
-  return new Promise(resolve => {
+  const outputFile = `${dir}/${inputFile.replace('.en.', `.${output}.`)}`;
+  return new Promise((resolve) => {
     const ws = fs.createWriteStream(outputFile);
-    fastCsv
-      .write(strArray, { headers: true, quoteColumns: true })
-      .pipe(ws);
-    ws.on('finish', () => ws.close(resolve))
+    fastCsv.write(strArray, { headers: true, quoteColumns: true }).pipe(ws);
+    ws.on('finish', () => ws.close(resolve));
   });
 }
 
@@ -85,17 +90,21 @@ async function readFile() {
 async function process(data) {
   const keys = await neatCsv(data);
 
-  for(const target of targets) {
-    console.log(target)
-    for(const output of target.out) {
+  for (const target of targets) {
+    console.log(target);
+
+    for (const output of target.out) {
       let strArray = [];
-      for(const key of keys) {
+
+      for (const key of keys) {
         const obj = {
           Key: key.Key,
-          en: key.en
-        }
+          en: key.en,
+        };
+        
         const existingTranslation = await rowExists(key.Key, output);
-        if(existingTranslation > '') {
+
+        if (existingTranslation > '') {
           obj[output] = existingTranslation;
           strArray.push(obj);
         } else {
@@ -105,17 +114,19 @@ async function process(data) {
           strArray.push(obj);
         }
       }
+
       await writeFile(strArray, output);
     }
   }
-
 }
+
 async function main() {
-  for(inputFile of inputFiles) {
+  for (inputFile of inputFiles) {
     file = `${inputFolder}${inputFile}`;
     const data = await readFile();
     await process(data);
   }
+
   pool.end();
 }
 

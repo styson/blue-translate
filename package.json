@@ -5,18 +5,20 @@
   "author": "Sam Tyson <styson@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "eslint": "eslint --quiet *.js"
+    "eslint": "eslint --quiet *.js",
+    "start": "node readAndTranslate.js"
   },
   "dependencies": {
-    "@google-cloud/translate": "^7.0.3",
-    "fast-csv": "^4.3.6",
+    "@google-cloud/translate": "^8.3.0",
+    "fast-csv": "^5.0.1",
     "fs": "^0.0.1-security",
-    "mkdirp": "^1.0.4",
-    "mysql2": "^2.2.5",
+    "mkdirp": "^3.0.1",
+    "mysql2": "^3.10.3",
     "neat-csv": "^6.0.1"
   },
   "devDependencies": {
-    "eslint": "^7.15.0",
-    "yarn-audit-fix": "^9.3.6"
+    "eslint": "^9.7.0",
+    "prettier": "^3.3.3",
+    "yarn-audit-fix": "^10.0.7"
   }
 }
