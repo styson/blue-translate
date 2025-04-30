@@ -5,16 +5,17 @@ const mkdirp = require('mkdirp');
 const mysql = require('mysql2/promise');
 const neatCsv = require('neat-csv'); // https://github.com/sindresorhus/neat-csv
 
-const translate = new Translate();
+const ignorePreviousDatabaseRecords = true;
+const logging = false;
+
+const projectId = 'blue-translate-1589383267630';
+const translate = new Translate({ projectId });
 
 const pool = mysql.createPool({
   host: 'localhost',
   user: 'root',
   password: 'sasa',
   database: 'translate',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0,
 });
 
 const targets = require('./targets.js');
@@ -24,15 +25,21 @@ const targets = require('./targets.js');
 // ]
 
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
-const inputFiles = ['2024.6.1.CustomFields.en.csv'];
+// const inputFiles = ['2024.10.HolidayManager.en.csv'];
+// const inputFiles = ['2025.1.CloseResolutionRequiredList.en.csv'];
+const inputFiles = ['2025.2.LinkedCases.en.csv'];
 
 let inputFile = '';
 let file = '';
 
-const ignorePreviousDatabaseRecords = false;
+function debug(message) {
+  if (logging) console.log(message);
+}
 
 async function translateText(text, target) {
+  debug(`before translate api ${target}: ${new Date()}`);
   const [translation] = await translate.translate(text, target);
+  debug(`after translate api ${target}: ${new Date()}`);
 
   return translation;
 }
@@ -78,7 +85,7 @@ async function writeFile(strArray, output) {
 
 async function readFile() {
   return new Promise((resolve, reject) => {
-    fs.readFile(file, 'utf8', function (err, data) {
+    fs.readFile(file, 'utf8', function(err, data) {
       if (err) {
         reject(err);
       }
@@ -101,7 +108,7 @@ async function process(data) {
           Key: key.Key,
           en: key.en,
         };
-        
+
         const existingTranslation = await rowExists(key.Key, output);
 
         if (existingTranslation > '') {
@@ -127,7 +134,7 @@ async function main() {
     await process(data);
   }
 
-  pool.end();
+  await pool.end();
 }
 
 main();
