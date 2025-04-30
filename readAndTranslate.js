@@ -5,7 +5,7 @@ const mkdirp = require('mkdirp');
 const mysql = require('mysql2/promise');
 const neatCsv = require('neat-csv'); // https://github.com/sindresorhus/neat-csv
 
-const ignorePreviousDatabaseRecords = true;
+const ignorePreviousDatabaseRecords = false;
 const logging = false;
 
 const projectId = 'blue-translate-1589383267630';
@@ -25,8 +25,6 @@ const targets = require('./targets.js');
 // ]
 
 const inputFolder = 'C:\\projects\\blue\\agent\\source\\i18n\\Data\\en\\';
-// const inputFiles = ['2024.10.HolidayManager.en.csv'];
-// const inputFiles = ['2025.1.CloseResolutionRequiredList.en.csv'];
 const inputFiles = ['2025.2.LinkedCases.en.csv'];
 
 let inputFile = '';

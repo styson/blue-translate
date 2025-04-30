@@ -14,7 +14,7 @@
     "fs": "^0.0.1-security",
     "mkdirp": "^3.0.1",
     "mysql2": "^3.11.0",
-    "neat-csv": "^7.0.0"
+    "neat-csv": "6.0.1"
   },
   "devDependencies": {
     "eslint": "^9.7.0",
