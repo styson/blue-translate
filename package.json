@@ -9,16 +9,15 @@
     "start": "node readAndTranslate.js"
   },
   "dependencies": {
-    "@google-cloud/translate": "^8.4.0",
-    "fast-csv": "^5.0.1",
-    "fs": "^0.0.1-security",
+    "@google-cloud/translate": "^10.0.1",
+    "fast-csv": "^5.0.7",
+    "fs": "^0.0.2",
     "mkdirp": "^3.0.1",
-    "mysql2": "^3.11.0",
+    "mysql2": "^3.24.2",
     "neat-csv": "6.0.1"
   },
   "devDependencies": {
-    "eslint": "^9.7.0",
-    "prettier": "^3.3.3",
-    "yarn-audit-fix": "^10.0.7"
+    "eslint": "^9.39.5",
+    "prettier": "^3.9.6"
   }
 }

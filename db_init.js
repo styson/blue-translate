@@ -2,16 +2,16 @@ const mysql = require('mysql2');
 const con = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'sasa'
+  password: 'sasa',
 });
 
-con.connect(function(err) {
+con.connect(function (err) {
   if (err) throw err;
   con.query('CREATE DATABASE IF NOT EXISTS translate', function (err) {
     if (err) throw err;
   });
 
-  con.changeUser({database: 'translate'}, function (err) {
+  con.changeUser({ database: 'translate' }, function (err) {
     if (err) throw err;
   });
 
@@ -31,7 +31,7 @@ con.connect(function(err) {
   const addIndex = 'ALTER TABLE `strings` ADD INDEX `keyword_locale_index` (`keyword`,`locale`)';
   con.query(addIndex, function (err) {
     // if (err) throw err;
+    console.log('database initialized');
+    con.end();
   });
-
-  console.log('database initialized');
 });
